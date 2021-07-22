@@ -134,9 +134,9 @@ class Play extends Phaser.Scene {
         this.steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
         this.stepping = false;
         this.clockLoop = this.sound.add('clockLoop', { loop: true});
-        this.clockLoop.play({ rate: 1.5, volume: 0.7})
+        this.clockLoop.play({ rate: 1.5, volume: 0.5})
         this.roomTone = this.sound.add('roomTone', { loop: true});
-        this.roomTone.play({ volume: 0.1})
+        this.roomTone.play({ volume: 0.2})
         
         // define keys
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -146,7 +146,7 @@ class Play extends Phaser.Scene {
         keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         // variables
-        this.gameTimer = 15000;    // 7 minute timer
+        this.gameTimer = 20000;    // 7 minute timer
         this.chimeTimer = 0;
         this.movespeed = 140;
         this.lightsOn = true;
