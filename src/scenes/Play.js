@@ -20,7 +20,6 @@ class Play extends Phaser.Scene {
         this.load.image('door', './assets/door.png');
         this.load.image('shelves', './assets/bookshelves2.png');
         this.load.image('paper', './assets/paper.png');
-        this.load.image('floorface', './assets/FloorFace.png')
         this.load.spritesheet('player', './assets/playerSpriteSheet.png', {
             frameWidth: 15,
             frameHeight: 34,
@@ -147,7 +146,7 @@ class Play extends Phaser.Scene {
 
 
         // variables
-        this.gameTimer = 15000;    // 7 minute timer
+        this.gameTimer = 420000;    // 7 minute timer
         this.chimeTimer = 0;
         this.movespeed = 140;
         this.lightsOn = true;
@@ -155,7 +154,6 @@ class Play extends Phaser.Scene {
         this.obtainedKey = false;
         this.clockReady = false;
         this.player.direction;
-        this.code = "";
     }
 
     update() {
