@@ -146,7 +146,7 @@ class Play extends Phaser.Scene {
         keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         // variables
-        this.gameTimer = 20000;    // 7 minute timer
+        this.gameTimer = 420000;    // 7 minute timer
         this.chimeTimer = 0;
         this.movespeed = 140;
         this.lightsOn = true;
