@@ -336,10 +336,12 @@ class Play extends Phaser.Scene {
                     }
                 } 
                 else {
-                    if (this.lightsOn) {        // unlocked, lights on
+                    if (this.lightsOn) {
+                        this.scene.pause();        // unlocked, lights on
                         this.scene.launch('clockScene', {x:3});
                     }
-                    if (!this.lightsOn) {       // unlocked, lights off
+                    if (!this.lightsOn) {  
+                        this.scene.pause();     // unlocked, lights off
                         this.scene.launch('clockScene', {x:4});
                     }        
                 }
