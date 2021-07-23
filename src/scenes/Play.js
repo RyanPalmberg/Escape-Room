@@ -20,8 +20,8 @@ class Play extends Phaser.Scene {
         this.load.image('door', './assets/door.png');
         this.load.image('shelves', './assets/bookshelves2.png');
         this.load.image('paper', './assets/paper.png');
-        // this.load.image('floorface', './assets/FloorFace.png')
         this.load.spritesheet('player', './assets/PlayerSpritesheet.png', {
+
             frameWidth: 15,
             frameHeight: 34,
         });
@@ -94,7 +94,13 @@ class Play extends Phaser.Scene {
 
         this.potterb = this.physics.add.sprite(35, centerY-20, 'vasebroke');
         this.potterb.body.setImmovable(true);
-        // this.vasb = this.add.image(35, centerY, 'vasebroke')
+
+        // camera
+        this.camera = this.cameras.main;
+        this.camera.setBounds(0, 0, game.config.width, game.config.height)
+        this.camera.setZoom(1.3)
+        this.camera.setDeadzone(60, 40);
+        this.camera.startFollow(this.player);
 
         // player animations (walking)
         this.anims.create({
@@ -122,17 +128,11 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('player', { start: 9, end: 11 }),
         });
 
-        // camera
-        this.camera = this.cameras.main;
-        this.camera.setBounds(0, 0, game.config.width, game.config.height)
-        this.camera.setZoom(1.3)
-        this.camera.setDeadzone(60, 40);
-        this.camera.startFollow(this.player);
-
         // add audio stuff
         // step array for footstep audio
         this.steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
         this.stepping = false;
+        // add and play clock and room loops
         this.clockLoop = this.sound.add('clockLoop', { loop: true});
         this.clockLoop.play({ rate: 1.5, volume: 0.5})
         this.roomTone = this.sound.add('roomTone', { loop: true});
@@ -144,6 +144,8 @@ class Play extends Phaser.Scene {
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+
 
         // variables
         this.gameTimer = 420000;    // 7 minute timer
@@ -154,7 +156,6 @@ class Play extends Phaser.Scene {
         this.obtainedKey = false;
         this.clockReady = false;
         this.player.direction;
-        this.code = "";
     }
 
     update() {
@@ -352,14 +353,15 @@ class Play extends Phaser.Scene {
 
             // shelves
             if (`${obj2.texture.key}` == 'shelves' && Phaser.Input.Keyboard.JustDown(keyE)) {
-                this.obtainedText = this.add.text(this.camera.centerX - 125, this.camera.centerY + 85, 'Obtained:').setOrigin(0.5);
-                this.obtainedimage = this.add.image(this.camera.centerX - 50, this.camera.centerY + 85, 'lens').setOrigin(0.5);
-                this.obtainedimage.setScrollFactor(0, 0);
+                if (!this.obtainedTool) {
+                    this.obtainedText = this.add.text(this.camera.centerX - 125, this.camera.centerY + 85, 'Obtained:').setOrigin(0.5);
+                    this.obtainedimage = this.add.image(this.camera.centerX - 50, this.camera.centerY + 85, 'lens').setOrigin(0.5);
+                }
                 this.obtainedText.setScrollFactor(0, 0);        // setScrollFactor(0,0) makes the text follow the camera
+                this.obtainedimage.setScrollFactor(0, 0);
                 this.obtainedTool = true;
             }
 
-        
             if (this.obtainedKey && this.clockReady == false) {
                 this.clockReady = true;       // set true to avoid looping
                 this.obtainedText = this.add.text(this.camera.centerX - 125, this.camera.centerY + 115, 'Obtained:').setOrigin(0.5);
@@ -369,6 +371,11 @@ class Play extends Phaser.Scene {
             }       
         });
 
+        // Hidden shorcut
+        if (Phaser.Input.Keyboard.JustDown(keyM)) {
+            this.scene.stop();
+            this.scene.launch('loseScene');
+        }
         // Game Over
         this.gameClock = this.time.delayedCall(this.gameTimer, () => {
             this.scene.stop();
